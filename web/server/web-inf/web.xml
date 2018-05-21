@@ -34,6 +34,14 @@
   </context-param>
   -->
 
+  <!-- imaps servlet -->
+  <servlet>
+    <servlet-name>imaps</servlet-name>
+    <servlet-class>net.sf.regain.ui.server.ImapServlet</servlet-class>
+  </servlet>
+  <!-- imaps servlet -->
+ 
+ 
   <!-- file servlet -->
   <servlet>
     <servlet-name>file</servlet-name>
@@ -41,10 +49,51 @@
     <servlet-class>net.sf.regain.ui.server.FileServlet</servlet-class>
   </servlet>
 
+ 
   <!-- Mapping for file servlet -->
   <servlet-mapping>
     <servlet-name>file</servlet-name>
     <url-pattern>/file/*</url-pattern>
   </servlet-mapping>
+  
+   <servlet-mapping>
+    <servlet-name>imaps</servlet-name>
+    <url-pattern>/imaps/*</url-pattern>
+  </servlet-mapping>
+  
+   <servlet-mapping>
+    <servlet-name>imaps</servlet-name>
+    <url-pattern>/imap/*</url-pattern>
+  </servlet-mapping>
+
+  	<security-constraint>
+
+		<web-resource-collection>
+			<web-resource-name>Wildcard means whole app requires authentication</web-resource-name>
+			<url-pattern>/*</url-pattern>
+			<http-method>GET</http-method>
+			<http-method>POST</http-method>
+		</web-resource-collection>
+
+		<auth-constraint>
+			<role-name>imapuser</role-name>
+		</auth-constraint>
+
+		<user-data-constraint>
+			<!-- transport-guarantee can be CONFIDENTIAL, INTEGRAL, or NONE -->
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
+	<security-role>
+	    <role-name>*</role-name>
+	</security-role>
+
+	<login-config>
+		<auth-method>BASIC</auth-method>
+	    <realm-name>REGAIN</realm-name>
+	</login-config>
+  
+ 
 
 </web-app>
