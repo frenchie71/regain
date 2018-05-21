@@ -1087,6 +1087,11 @@ public class Crawler implements ErrorLogger {
     String folder = "";
     if (originURLName.getFile() != null) {
       folder = originURLName.getFile().replaceAll("%20", " ");
+      /*
+      //If you are using dovecot as an imap server, this needs to be:
+      folder = originURLName.getFile().replaceAll("%20", " ").replaceAll("/",".");;
+      //as dovecot wants dots and not slashes in folder names
+      */
     }
     URLName urlName = new URLName(originURLName.getProtocol(), originURLName.getHost(),
       originURLName.getPort(), folder, originURLName.getUsername(), originURLName.getPassword());
