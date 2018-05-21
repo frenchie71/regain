@@ -22,6 +22,7 @@ package net.sf.regain.crawler;
 
 import com.sun.mail.imap.IMAPFolder;
 import com.sun.mail.imap.IMAPSSLStore;
+import com.sun.mail.imap.IMAPStore;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -1091,12 +1092,25 @@ public class Crawler implements ErrorLogger {
       originURLName.getPort(), folder, originURLName.getUsername(), originURLName.getPassword());
 
     try {
-      IMAPSSLStore imapStore = new IMAPSSLStore(session, urlName);
+    	// check if we use imaps ore imap
+
+    	IMAPStore imapStore;
+    	
+    	if (urlName.toString().startsWith("imaps:"))
+    	{
+            mLog.debug("Using Secure imaps for IMAP url: " + folderUrl);
+    		imapStore = new IMAPSSLStore(session, urlName);
+    	} else
+    	{
+            mLog.debug("Using unencrypted imap for IMAP url: " + folderUrl);
+    		imapStore = new IMAPStore(session, urlName);
+    	}
+//      IMAPSSLStore imapStore = new IMAPSSLStore(session, urlName);
 
       imapStore.connect();
       IMAPFolder startFolder;
 
-      if (urlName.getFile() == null) {
+      if ((urlName.getFile() == null) | (urlName.getFile() == "")) {
         // There is no folder given
         startFolder = (IMAPFolder) imapStore.getDefaultFolder();
       } else {
