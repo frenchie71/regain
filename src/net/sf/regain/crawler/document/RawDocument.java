@@ -227,18 +227,16 @@ public class RawDocument {
         URLName urlName = new URLName(originURLName.getProtocol(), originURLName.getHost(),
           originURLName.getPort(), folder, originURLName.getUsername(), originURLName.getPassword());
 
-//        IMAPSSLStore imapStore = new IMAPSSLStore(session, urlName);
+        // IMAPSSLStore imapStore = new IMAPSSLStore(session, urlName);
         IMAPStore imapStore;
-    	
-    	if (urlName.toString().startsWith("imaps:"))
-    	{
-            mLog.debug("Using Secure imaps for IMAP url: " + url);
-    		imapStore = new IMAPSSLStore(session, urlName);
-    	} else
-    	{
-            mLog.debug("Using unencrypted imap for IMAP url: " + url);
-    		imapStore = new IMAPStore(session, urlName);
-    	}
+
+        if (urlName.toString().startsWith("imaps:")) {
+          mLog.debug("Using Secure imaps for IMAP url: " + url);
+          imapStore = new IMAPSSLStore(session, urlName);
+        } else {
+          mLog.debug("Using unencrypted imap for IMAP url: " + url);
+          imapStore = new IMAPStore(session, urlName);
+        }
         imapStore.connect();
         IMAPFolder currentFolder;
 
